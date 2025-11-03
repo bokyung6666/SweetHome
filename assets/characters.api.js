@@ -1,3 +1,27 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCzdwksNCn-s97M0kkL9lm-UO7FCT6rZkQ",
+  authDomain: "sweethmoe-d61d0.firebaseapp.com",
+  projectId: "sweethmoe-d61d0",
+  storageBucket: "sweethmoe-d61d0.firebasestorage.app",
+  messagingSenderId: "556294938952",
+  appId: "1:556294938952:web:072e0d46d449f0cd4dd37d",
+  measurementId: "G-9GQ3KD8K9S"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+
 // characters.html에서 사용할 API 연동 스크립트
 
 const API_URL = window.location.origin;
@@ -309,3 +333,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // 페이지 로드 시 즉시 실행 (DOMContentLoaded 전이라도)
 updateUIBasedOnAuth();
 loadCharacters();
+
