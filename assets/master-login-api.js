@@ -4,7 +4,7 @@ const form = document.getElementById('masterLoginForm');
 const passwordInput = document.getElementById('masterPass');
 const loginMsg = document.getElementById('loginMsg');
 
-const MASTER_PASSWORD = 'admin1234';
+const MASTER_PASSWORD = '1234';
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -40,3 +40,4 @@ form.addEventListener('submit', async (e) => {
     }
 });
 ```
+
