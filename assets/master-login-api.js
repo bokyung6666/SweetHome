@@ -1,14 +1,15 @@
-// login.html에서 사용할 API 연동 스크립트
+// login.js - 최종 코드
 
-const API_URL = window.location.origin;
 const form = document.getElementById('masterLoginForm');
 const passwordInput = document.getElementById('masterPass');
 const loginMsg = document.getElementById('loginMsg');
 
+const MASTER_PASSWORD = 'admin1234';
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const password = passwordInput.value;
+    const password = passwordInput.value.trim();
     
     if (!password) {
         loginMsg.textContent = '❌ 비밀번호를 입력해주세요.';
@@ -16,41 +17,26 @@ form.addEventListener('submit', async (e) => {
         return;
     }
     
-    // 로딩 표시
     loginMsg.textContent = '🔄 인증 중...';
     loginMsg.style.color = '#666';
     
-    try {
-        const response = await fetch(`${API_URL}/api/auth/master`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password })
-        });
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    if (password === MASTER_PASSWORD) {
+        sessionStorage.setItem('isMaster', 'true');
+        sessionStorage.setItem('loginTime', new Date().toISOString());
         
-        const result = await response.json();
+        loginMsg.textContent = '✅ 인증 성공! 이동 중...';
+        loginMsg.style.color = 'green';
         
-        if (result.success) {
-            // 세션에 저장
-            sessionStorage.setItem('isMaster', 'true');
-            
-            loginMsg.textContent = '✅ 인증 성공! 이동 중...';
-            loginMsg.style.color = 'green';
-            
-            // 1초 후 메인 페이지로 이동
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1000);
-        } else {
-            loginMsg.textContent = '❌ ' + result.message;
-            loginMsg.style.color = 'red';
-            passwordInput.value = '';
-            passwordInput.focus();
-        }
-    } catch (error) {
-        console.error('로그인 실패:', error);
-        loginMsg.textContent = '❌ 서버 연결에 실패했습니다.';
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
+    } else {
+        loginMsg.textContent = '❌ 비밀번호가 올바르지 않습니다.';
         loginMsg.style.color = 'red';
+        passwordInput.value = '';
+        passwordInput.focus();
     }
 });
+```
