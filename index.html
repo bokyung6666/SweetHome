@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Froggy's Pond</title>
+  
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+  :root {
+    --main-green: #7ed48c;
+    --dark-green: #204d29;
+    --leaf-green: #53b66b;
+    --pond-blue: #a8f5de;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Jua', sans-serif;
+    background: linear-gradient(180deg, #c5f8db 0%, #d8fff0 40%, #a7f3dc 75%, #c9ffe8 100%);
+    color: var(--dark-green);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* 헤더 */
+  .header-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #c9ffe8, #b3fcd6);
+    border-bottom: 3px solid var(--main-green);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-mini::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(to bottom, rgba(126,212,140,0.3), transparent);
+  }
+
+  .logo-link {
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.4s ease;
+    margin-bottom: 1rem;
+  }
+
+  .logo-link:hover {
+    transform: scale(1.15) rotate(10deg);
+  }
+
+  .logo-img {
+    width: 80px;
+    height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  }
+
+  .header-mini h1 {
+    font-size: 2.5rem;
+    margin: 0.5rem 0;
+    color: var(--leaf-green);
+    text-shadow: 2px 2px 6px rgba(255,255,255,0.9);
+    letter-spacing: 2px;
+  }
+
+  .welcome {
+    font-size: 1.2rem;
+    color: var(--dark-green);
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+
+  /* 인트로 섹션 */
+  .intro {
+    text-align: center;
+    max-width: 700px;
+    margin: 3rem auto 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    border-radius: 24px;
+    border: 2px solid rgba(126,212,140,0.4);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    backdrop-filter: blur(12px);
+  }
+
+  .intro h2 {
+    color: var(--leaf-green);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+  }
+
+  .intro p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark-green);
+  }
+
+  /* 카드 섹션 - 2개 중앙 정렬 */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 2rem 1rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .card {
+    width: 320px;
+    min-height: 220px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--dark-green);
+    padding: 2.5rem 1.8rem;
+    border: 2px solid rgba(126,212,140,0.4);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+  }
+
+  .card:hover::before {
+    left: 100%;
+  }
+
+  .card:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,150,0,0.2);
+    border-color: var(--main-green);
+  }
+
+  .card h3 {
+    font-size: 1.8rem;
+    color: var(--leaf-green);
+    margin-bottom: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+  }
+
+  .card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--dark-green);
+  }
+
+  /* 물방울 애니메이션 */
+  .bubble {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(173, 216, 230, 0.3));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    animation: floatUp 15s linear infinite;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-100vh) scale(1.3);
+      opacity: 0;
+    }
+  }
+
+  /* 푸터 */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.3));
+    border-top: 2px solid var(--main-green);
+    font-size: 1rem;
+    color: var(--dark-green);
+    position: relative;
+    z-index: 10;
+    margin-top: 2rem;
+  }
+
+  .link-no-mouse {
+    color: inherit;
+    text-decoration: none;
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .link-no-mouse:hover,
+  .link-no-mouse:active,
+  .link-no-mouse:visited {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .link-no-mouse:focus-visible {
+    outline: 2px dashed #777;
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* 반응형 */
+  @media (max-width: 768px) {
+    .header-mini h1 {
+      font-size: 2rem;
+    }
+
+    .intro {
+      margin: 2rem 1rem;
+      padding: 1.5rem;
+    }
+
+    .intro h2 {
+      font-size: 1.5rem;
+    }
+
+    .cards {
+      gap: 1.5rem;
+      padding: 1.5rem 1rem 3rem;
+      flex-direction: column;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo-img {
+      width: 60px;
+    }
+
+    .header-mini h1 {
+      font-size: 1.8rem;
+    }
+
+    .welcome {
+      font-size: 1rem;
+    }
+
+    .card {
+      max-width: 320px;
+      padding: 2rem 1.5rem;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+    }
+  }
+  </style>
+</head>
+
+<body>
+  <header class="header-mini">
+    <a href="index.html" class="logo-link">
+      <img src="assets/logo.png" alt="Froggy's Home Logo" class="logo-img" />
+    </a>
+    <h1>Froggy's Home</h1>
+    <p class="welcome">"오늘도 개굴한 하루 되세요!"</p>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>🐸 겔로의 연못에 오신 걸 환영합니다 🐸</h2>
+      <p>이곳은 겔로의 개인홈입니다.<br>  
+        자캐와 판매 캐릭터를 둘러보세요!</p>
+    </section>
+
+    <section class="cards">
+      <a href="characters.html" class="card">
+        <h3>🐸 자캐 모음</h3>
+        <p>겔로의 자캐들을 한눈에 볼 수 있는 공간이에요.</p>
+      </a>
+
+      <a href="sale.html" class="card">
+        <h3>💰 판매 캐릭터</h3>
+        <p>현재 판매 중인 캐릭터 목록이에요.</p>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Froggy's Home | made by kello <a href="login.html" class="link-no-mouse">💚</a>
+  </footer>
+
+  <script>
+  // 동적 물방울 생성
+  document.addEventListener("DOMContentLoaded", () => {
+    const totalBubbles = 20;
+    const body = document.body;
+
+    for (let i = 0; i < totalBubbles; i++) {
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble");
+
+      const size = Math.random() * 25 + 10;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+
+      bubble.style.left = `${Math.random() * 100}%`;
+      bubble.style.bottom = `-${size}px`;
+
+      const delay = Math.random() * 10;
+      const duration = 12 + Math.random() * 8;
+      bubble.style.animationDelay = `${delay}s`;
+      bubble.style.animationDuration = `${duration}s`;
+
+      body.appendChild(bubble);
+    }
+  });
+  </script>
+</body>
+</html>
